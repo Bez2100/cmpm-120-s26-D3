@@ -66,7 +66,7 @@ const config = {
         default: "arcade",
         arcade: {
             gravity: { x: 0, y: 0 },
-            debug: true
+            debug: false
         }
     },
     scene: [Level1, victory1, Level2, victory2, Level3, victory3, GameOver]

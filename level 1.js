@@ -25,10 +25,28 @@ class Level1 extends Phaser.Scene {
     }
 
     create() {
+        // Reset all state for a fresh start
+        this.score = 0;
+        this.coinsCollected = 0;
+        this.anchorImage = null;
+        this.meatObject = null;
+        this.ropeGraphics = null;
+        this.coinsGroup = null;
+        this.ropeIsBroken = false;
+        this.luffyObject = null;
+        this.hasWon = false;
+        this.hangingBaseX = 0;
+        this.hangingBaseY = 0;
+        this.swingAmplitude = 14;
+        this.swingSpeed = 0.003;
+        this.swingPhase = 0;
+
         this.add
             .image(0, 0, "level1")
             .setOrigin(0, 0)
             .setDisplaySize(this.scale.width, this.scale.height);
+
+        // ...existing code...
         const gamename = this.add.text(this.scale.width / 2, this.scale.height / 2 - 100, "Meat Mania", {
             font: "50px Arial",
             fill: "#090909"
@@ -137,8 +155,23 @@ class Level1 extends Phaser.Scene {
                     this.ropeGraphics = ropeGraphics;
                     this.meatObject = meat;
 
+                    // Add tan rectangle and message to the left, initially invisible
+                    const rectWidth = 260;
+                    const rectHeight = 180;
+                    const rectX = 20;
+                    const rectY = 100;
+                    const tanColor = 0xEED8AE;
+                    const infoRect = this.add.rectangle(rectX, rectY, rectWidth, rectHeight, tanColor)
+                        .setOrigin(0, 0)
+                        .setStrokeStyle(2, 0xBFA76F)
+                        .setAlpha(0);
+                    const infoText = this.add.text(rectX + 16, rectY + 16, "Your captain is starving\nwe need to find a way\nto feed him to get his\nstrength back.", {
+                        font: "20px Arial",
+                        fill: "#6B4F1D",
+                        wordWrap: { width: rectWidth - 32 }
+                    }).setAlpha(0);
                     this.tweens.add({
-                        targets: [luffy, coin1, coin2, coin3, meat, connectImg, ropeGraphics],
+                        targets: [luffy, coin1, coin2, coin3, meat, connectImg, ropeGraphics, infoRect, infoText],
                         alpha: 1,
                         duration: 400,
                         ease: "Power2"
@@ -163,6 +196,12 @@ class Level1 extends Phaser.Scene {
                             this.physics.add.existing(this.meatObject);
                             this.meatObject.body.setGravityY(600);
                             this.meatObject.body.setCollideWorldBounds(true);
+                            this.meatObject.body.onWorldBounds = true;
+                            this.physics.world.on('worldbounds', (body) => {
+                                if (body.gameObject === this.meatObject) {
+                                    this.scene.start("GameOver", { level: 1 });
+                                }
+                            }, this);
                             this.meatObject.body.setBounce(0.3);
                             const swingVelocityX = Math.cos((this.time.now * this.swingSpeed) + this.swingPhase) * this.swingAmplitude * this.swingSpeed * 1000;
                             this.meatObject.body.setVelocityX(swingVelocityX);

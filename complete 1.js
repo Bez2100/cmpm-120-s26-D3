@@ -53,7 +53,7 @@ class victory1 extends Phaser.Scene {
         restartButton.setOrigin(0.5);
         restartButton.setInteractive({ useHandCursor: true });
         restartButton.on("pointerdown", () => {
-            this.scene.start("level2");
+            this.scene.start("Level2");
         });
     }
 }
@@ -69,7 +69,7 @@ const config = {
             debug: true
         }
     },
-    scene: [Level1, victory1, level2, victory2]
+    scene: [Level1, victory1, Level2, victory2, Level3, victory3, GameOver]
 };
 
 new Phaser.Game(config);

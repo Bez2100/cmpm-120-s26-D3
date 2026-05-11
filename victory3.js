@@ -1,6 +1,6 @@
-class victory2 extends Phaser.Scene {
+class victory3 extends Phaser.Scene {
     constructor() {
-        super("victory2");
+        super("victory3");
     }
 
     preload() {
@@ -48,7 +48,7 @@ class victory2 extends Phaser.Scene {
             fill: "#ffffff"
         }).setOrigin(0.5);
 
-        const restartButton = this.add.text(this.scale.width / 2, this.scale.height / 2 + 150, "Next Level", {
+        const restartButton = this.add.text(this.scale.width / 2, this.scale.height / 2 + 150, "Play Again", {
             font: "36px Arial",
             fill: "#ffffff",
             backgroundColor: "#222222",
@@ -57,7 +57,7 @@ class victory2 extends Phaser.Scene {
         restartButton.setOrigin(0.5);
         restartButton.setInteractive({ useHandCursor: true });
         restartButton.on("pointerdown", () => {
-            this.scene.start("Level3");
+            this.scene.start("level1");
         });
     }
 }
